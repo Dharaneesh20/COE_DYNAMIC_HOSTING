@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - ACloud Storage{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-files"></i> My Files</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data" class="mb-4">
+                    <div class="input-group">
+                        <input type="file" class="form-control" name="file" required>
+                        <button type="submit" class="btn btn-aws">
+                            <i class="bi bi-cloud-upload"></i> Upload
+                        </button>
+                    </div>
+                    <small class="text-muted">Maximum file size: 16MB</small>
+                </form>
+
+                {% if files %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>File Name</th>
+                                    <th>Size</th>
+                                    <th>Upload Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td>
+                                        <i class="bi bi-file-earmark"></i>
+                                        {{ file.original_filename }}
+                                    </td>
+                                    <td>{{ "%.2f"|format(file.file_size / 1024 / 1024) }} MB</td>
+                                    <td>{{ file.upload_date }}</td>
+                                    <td>
+                                        <a href="{{ url_for('download_file', file_id=file.id) }}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <a href="{{ url_for('delete_file', file_id=file.id) }}" 
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Are you sure you want to delete this file?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-folder-x text-muted" style="font-size: 4rem;"></i>
+                        <h5 class="text-muted mt-2">No files uploaded yet</h5>
+                        <p class="text-muted">Upload your first file to get started!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-person-circle"></i> Account Info</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Member Since:</strong> {{ user.created_at.split(' ')[0] }}</p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="bi bi-hdd"></i> Storage Usage</h5>
+            </div>
+            <div class="card-body">
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-aws" role="progressbar" 
+                         style="width: {{ storage_percentage }}%"
+                         aria-valuenow="{{ storage_percentage }}" 
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+                <p class="mb-1">
+                    <strong>Used:</strong> {{ "%.2f"|format(user.storage_used / 1024 / 1024) }} MB
+                </p>
+                <p class="mb-1">
+                    <strong>Total:</strong> {{ "%.0f"|format(user.storage_limit / 1024 / 1024) }} MB
+                </p>
+                <p class="mb-0">
+                    <strong>Available:</strong> {{ "%.2f"|format((user.storage_limit - user.storage_used) / 1024 / 1024) }} MB
+                </p>
+                
+                {% if storage_percentage > 80 %}
+                    <div class="alert alert-warning mt-2 mb-0">
+                        <small><i class="bi bi-exclamation-triangle"></i> Storage almost full!</small>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="bi bi-graph-up"></i> Quick Stats</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Total Files:</strong> {{ files|length }}</p>
+                <p class="mb-0"><strong>Storage Used:</strong> {{ "%.1f"|format(storage_percentage) }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

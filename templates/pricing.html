@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Pricing - AWS Cloud Storage{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="text-center mb-5">
+            <h1>Simple, Transparent Pricing</h1>
+            <p class="lead">Choose the plan that's right for you</p>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white text-center">
+                <h4>Free Tier</h4>
+                <h2>$0<small>/month</small></h2>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-check text-success"></i> 100MB Storage</li>
+                    <li><i class="bi bi-check text-success"></i> File Upload/Download</li>
+                    <li><i class="bi bi-check text-success"></i> Web Interface</li>
+                    <li><i class="bi bi-check text-success"></i> Basic Security</li>
+                    <li><i class="bi bi-check text-success"></i> 16MB Max File Size</li>
+                </ul>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started Free</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-warning">
+            <div class="card-header bg-warning text-dark text-center">
+                <h4>Basic Plan</h4>
+                <h2>$5<small>/month</small></h2>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-check text-success"></i> 10GB Storage</li>
+                    <li><i class="bi bi-check text-success"></i> File Upload/Download</li>
+                    <li><i class="bi bi-check text-success"></i> Web Interface</li>
+                    <li><i class="bi bi-check text-success"></i> Enhanced Security</li>
+                    <li><i class="bi bi-check text-success"></i> 100MB Max File Size</li>
+                    <li><i class="bi bi-check text-success"></i> Email Support</li>
+                </ul>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-warning" disabled>Coming Soon</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-success">
+            <div class="card-header bg-success text-white text-center">
+                <h4>Pro Plan</h4>
+                <h2>$15<small>/month</small></h2>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-check text-success"></i> 100GB Storage</li>
+                    <li><i class="bi bi-check text-success"></i> File Upload/Download</li>
+                    <li><i class="bi bi-check text-success"></i> Web Interface</li>
+                    <li><i class="bi bi-check text-success"></i> Premium Security</li>
+                    <li><i class="bi bi-check text-success"></i> 500MB Max File Size</li>
+                    <li><i class="bi bi-check text-success"></i> Priority Support</li>
+                    <li><i class="bi bi-check text-success"></i> API Access</li>
+                </ul>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-success" disabled>Coming Soon</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Frequently Asked Questions</h5>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                Is the free tier really free?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! The free tier provides 100MB of storage space with no monthly fees. Perfect for testing and small file storage needs.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                What file types are supported?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                All file types are supported including documents, images, videos, archives, and more. File size limits apply based on your plan.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                How secure are my files?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Your files are stored securely with industry-standard encryption. Each user has isolated storage space and secure authentication.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
