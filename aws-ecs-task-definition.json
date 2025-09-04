@@ -1,0 +1,89 @@
+{
+  "family": "coe-dynamic-hosting",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::YOUR_ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::YOUR_ACCOUNT_ID:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "coe-dynamic-hosting",
+      "image": "YOUR_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/coe-dynamic-hosting:latest",
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "FLASK_ENV",
+          "value": "production"
+        },
+        {
+          "name": "DATABASE_PATH",
+          "value": "/app/data/cloud_storage.db"
+        },
+        {
+          "name": "UPLOAD_FOLDER",
+          "value": "/app/uploads"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "SECRET_KEY",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:YOUR_ACCOUNT_ID:secret:coe-hosting-secret-key"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "app-data",
+          "containerPath": "/app/data",
+          "readOnly": false
+        },
+        {
+          "sourceVolume": "app-uploads",
+          "containerPath": "/app/uploads",
+          "readOnly": false
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/coe-dynamic-hosting",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "python -c \"import requests; requests.get('http://localhost:5000/', timeout=5)\" || exit 1"
+        ],
+        "interval": 60,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 30
+      },
+      "ulimits": [
+        {
+          "name": "nofile",
+          "softLimit": 1024,
+          "hardLimit": 1024
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "app-data",
+      "host": {}
+    },
+    {
+      "name": "app-uploads",
+      "host": {}
+    }
+  ]
+}

@@ -59,3 +59,4 @@ kubectl get pods -l app=coe-dynamic-hosting
 
 Write-Host "Application deployed successfully!" -ForegroundColor Green
 Write-Host "Note: It may take a few minutes for the LoadBalancer to be ready." -ForegroundColor Yellow
+

@@ -6,9 +6,9 @@ import secrets
 class Config:
     """Base configuration"""
     SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
-    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or 'uploads'
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or '/app/uploads'
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
-    DATABASE_PATH = os.environ.get('DATABASE_PATH') or 'cloud_storage.db'
+    DATABASE_PATH = os.environ.get('DATABASE_PATH') or '/app/data/cloud_storage.db'
     
 class DevelopmentConfig(Config):
     """Development configuration"""
