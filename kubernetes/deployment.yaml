@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coe-dynamic-hosting
+  labels:
+    app: coe-dynamic-hosting
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: coe-dynamic-hosting
+  template:
+    metadata:
+      labels:
+        app: coe-dynamic-hosting
+    spec:
+      containers:
+      - name: coe-dynamic-hosting
+        image: your-account-id.dkr.ecr.region.amazonaws.com/coe-dynamic-hosting:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: secret-key
+        - name: DATABASE_PATH
+          value: "/app/data/cloud_storage.db"
+        - name: UPLOAD_FOLDER
+          value: "/app/uploads"
+        volumeMounts:
+        - name: app-storage
+          mountPath: /app/data
+        - name: upload-storage
+          mountPath: /app/uploads
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: app-storage
+        persistentVolumeClaim:
+          claimName: app-pvc
+      - name: upload-storage
+        persistentVolumeClaim:
+          claimName: upload-pvc

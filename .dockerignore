@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+README.md
+SETUP_GUIDE.md
+PROJECT_SUMMARY.md
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.pytest_cache
+nosetests.xml
+.venv
+venv/
+
+# OS
+.DS_Store
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Development files
+*.log
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Database (will be handled via volumes)
+*.db
+
+# Deployment files
+deploy.sh
+start.sh
+kubernetes/

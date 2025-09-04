@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  FLASK_ENV: "production"
+  MAX_CONTENT_LENGTH: "16777216"  # 16MB
+  UPLOAD_FOLDER: "/app/uploads"
+  DATABASE_PATH: "/app/data/cloud_storage.db"

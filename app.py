@@ -5,18 +5,27 @@ import sqlite3
 import os
 from datetime import datetime
 import secrets
+from config import ProductionConfig, DevelopmentConfig
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(16)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Configure app based on environment
+env = os.environ.get('FLASK_ENV', 'development')
+if env == 'production':
+    app.config.from_object(ProductionConfig)
+else:
+    app.config.from_object(DevelopmentConfig)
 
 # Ensure upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 def init_db():
     """Initialize the database"""
-    conn = sqlite3.connect('cloud_storage.db')
+    db_path = app.config['DATABASE_PATH']
+    # Ensure database directory exists
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
     # Users table
@@ -50,7 +59,7 @@ def init_db():
 
 def get_db_connection():
     """Get database connection"""
-    conn = sqlite3.connect('cloud_storage.db')
+    conn = sqlite3.connect(app.config['DATABASE_PATH'])
     conn.row_factory = sqlite3.Row
     return conn
 
